@@ -6,6 +6,6 @@
     "autoload": {
         "psr-0": {
             "Classes": "src/"
-         }
+        }
     }
 }

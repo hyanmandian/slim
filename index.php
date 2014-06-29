@@ -4,6 +4,8 @@ ini_set("display_errors", 1);
 
 require 'vendor/autoload.php';
 
+use \Hyan\Model\Database as Db;
+
 $app = new \Slim\Slim();
 
 $app->config(array(
@@ -15,7 +17,7 @@ $app->config(array(
 ));
 
 $app->get('/', function () use($app) {
-    $database = new Model\Database();
+    $database = new Classes\Model\Database();
     $app->render("pages/home.php");
 });
 

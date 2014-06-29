@@ -18,7 +18,7 @@ class Database {
     }
 
     public function __construct() {
-        $this->database = new PDO($this->getDns(), $this->config["user"], $this->config["password"]);
+        $this->database = new \PDO($this->getDns(), $this->config["user"], $this->config["password"]);
     }
 
 }
