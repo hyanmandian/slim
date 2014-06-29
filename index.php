@@ -1,17 +1,16 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require 'vendor/autoload.php';
-
-use \Hyan\Model\Database as Db;
 
 $app = new \Slim\Slim();
 
 $app->config(array(
     'debug' => true,
     'mode' => 'development',
-    'templates.path' => 'views',
+    'templates.path' => 'app/views',
     'view' => '\Slim\LayoutView',
     'layout' => 'template.php'
 ));
