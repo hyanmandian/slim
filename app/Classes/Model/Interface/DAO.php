@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes\Model\DAO;
+namespace Classes\Model\Interface;
 
 interface DAO {
     public static function getInstance();

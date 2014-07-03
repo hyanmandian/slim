@@ -2,7 +2,7 @@
 
 namespace Classes\Model\DAO;
 
-class Patient implements \Classes\Model\DAO\DAO {
+class Patient implements \Classes\Model\Interface\DAO {
 
     private static $instance;
     private $query;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes\Model;
+namespace Classes\Model\Factory;
 
 class Database {
 
@@ -11,9 +11,9 @@ class Database {
     }
 
     private function configureDefaults() {
-        $this->setClass("patient", "Patient");
-        $this->setClass("medic", "Medic");
-        $this->setClass("consultation", "Consultation");
+        $this->setClass("patient", "\Classes\Model\DAO\Patient");
+        $this->setClass("medic", "\Classes\Model\DAO\Medic");
+        $this->setClass("consultation", "\Classes\Model\DAO\Consultation");
     }
 
     private function setClass($type, $class) {

@@ -2,7 +2,7 @@
 
 namespace Classes\Model\DAO;
 
-class Medic implements \Classes\Model\DAO\DAO {
+class Medic implements \Classes\Model\Interface\DAO {
 
     private static $instance;
     private $query;
