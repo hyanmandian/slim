@@ -24,12 +24,12 @@ class Database {
         $this->types[$type] = $class;
     }
 
-    public static function factory($vo) {
-        if (!isset($this->types[$tipo])) {
+    public static function factory($type) {
+        if (!isset($this->types[$type])) {
             throw new Exception("Invalid type");
         }
 
-        return new $this->types[$tipo];
+        return new $this->types[$type];
     }
 
 }
