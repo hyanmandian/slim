@@ -16,7 +16,6 @@ $app->config(array(
 ));
 
 $app->get('/', function () use($app) {
-    $database = new Classes\Model\Database();
     $app->render("pages/home.php");
 });
 

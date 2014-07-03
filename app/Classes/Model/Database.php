@@ -1,24 +1,30 @@
-<?php 
+<?php
 
 namespace Classes\Model;
 
 class Database {
 
-    private $database;
-    private $config = array(
-        "driver" => "pgsql",
-        "host" => "localhost",
-        "database" => "gb",
-        "user" => "root",
-        "password" => "123",
-    );
+    public static function factory($vo) {
+        $class = NULL;
 
-    private function getDns() {
-        return $this->config["driver"] . ":dbname=" . $this->config["database"] . ";host=" . $this->config["host"];
+        switch ($vo) {
+            case "Patient":
+                $class = new \Classes\Model\DAO\Patient;
+                break;
+            case "Medic":
+                $class = new \Classes\Model\DAO\Medic;
+                break;
+            case "Consultation":
+                $class = new \Classes\Model\DAO\Consultation;
+                break;
+            default:
+                throw new Exception("Class not exist");
+        }
+
+        if ($class instanceof \Classes\Model\DAO\DAO) {
+            return $class;
+        } else {
+            throw new Exception("Class not exist");
+        }
     }
-
-    public function __construct() {
-        $this->database = new \PDO($this->getDns(), $this->config["user"], $this->config["password"]);
-    }
-
 }
