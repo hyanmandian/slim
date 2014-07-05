@@ -2,7 +2,7 @@
 
 namespace Classes\Model\Factory;
 
-class Database {
+class DAO {
 
     private $types = array();
 

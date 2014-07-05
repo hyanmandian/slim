@@ -2,7 +2,7 @@
 
 namespace Classes\Model\VO;
 
-class Patient implements \Classes\Model\Interface\VO {
+class Patient implements \Classes\Model\Interfaces\VO {
 
     private $id;
     private $name;
