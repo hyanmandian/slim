@@ -7,9 +7,9 @@ class Connection {
     public static $config = array(
         "driver" => "pgsql",
         "host" => "localhost",
-        "dbname" => "work",
+        "dbname" => "hospital",
         "user" => "postgres",
-        "password" => "postgres",
+        "password" => "123",
     );
     
     private static $instance;

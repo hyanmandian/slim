@@ -2,7 +2,7 @@
 
 namespace Classes\Model\VO;
 
-class Medic implements \Classes\Model\Interfaces\VO{
+class Medic implements \Classes\Model\Interfaces\VO {
 
     private $id;
     private $name;

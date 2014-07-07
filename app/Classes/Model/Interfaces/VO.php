@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes\Model\VO\Interfaces;
+namespace Classes\Model\Interfaces;
 
 interface VO {
 }

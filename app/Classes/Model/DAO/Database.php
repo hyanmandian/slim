@@ -4,88 +4,87 @@ namespace Classes\Model\DAO;
 
 class Database {
 
-    private $query;
-    private $table;
-    private $fields = array();
+    protected $query;
+    protected $table;
+    protected $fields;
 
     public function insert(\Classes\Model\Interfaces\VO $vo) {
-        try {
-            $this->query = "INSERT INTO " . $this->table . "(" . implode(",", array_keys($this->fields)) . ") VALUES (";
+        $this->query = "INSERT INTO " . $this->table . "(" . implode(",", $this->fields) . ") VALUES (";
 
-            foreach ($this->fields as $key => $value) {
-                if (end($this->fields) == $key) {
-                    $this->query.= ":" . $key;
-                } else {
-                    $this->query.= ":" . $key . ",";
-                }
+        foreach ($this->fields as $fields) {
+            if (end($this->fields) === $fields) {
+                $this->query.= ":" . $fields;
+            } else {
+                $this->query.= ":" . $fields . ",";
             }
-            
-            $this->query.= ")";
-            
-            $this->query = \Classes\Model\Connection::getInstance()->prepare($this->query);
-
-            foreach ($this->fields as $key => $rule) {
-                $this->query->bindValue($value, call_user_func($vo, "get" . ucfirst($key)), call_user_func("\PDO", "::" . $rule));
-            }
-        } catch (\PDOException $e) {
-            throw $e;
         }
+
+        $this->query.= ")";
+
+        $this->query = \Classes\Model\Connection::getInstance()->prepare($this->query);
+
+        foreach ($this->fields as $field) {
+            $method = "get" . ucfirst($field);
+            $this->query->bindValue($field, $vo->{$method}());
+        }
+
+        return $this;
     }
 
     public function remove(\Classes\Model\Interfaces\VO $vo) {
-        try {
-            $this->query = "DELETE FROM " . $this->table . " WHERE id = :id";
+        $this->query = "DELETE FROM " . $this->table . " WHERE id = :id";
 
-            $this->query = \Classes\Model\Connection::getInstance()->prepare($this->query);
+        $this->query = \Classes\Model\Connection::getInstance()->prepare($this->query);
 
-            $this->query->bindValue(":id", $vo->getId(), \PDO::PARAM_INT);
-        } catch (\PDOException $e) {
-            throw $e;
-        }
+        $this->query->bindValue(":id", $vo->getId());
+
+        return $this;
     }
 
     public function update(\Classes\Model\Interfaces\VO $vo) {
-        try {
-            $this->query = "UPDATE " . $this->table . " SET ";
+        $this->query = "UPDATE " . $this->table . " SET ";
 
-            foreach ($this->fields as $field) {
-                if (end($this->fields) == $key) {
-                    $this->query.= $key . " = :" . $key;
-                } else {
-                    $this->query.= $key . " = :" . $key . ",";
-                }
+        foreach ($this->fields as $field) {
+            if (end($this->fields) == $field) {
+                $this->query.= $field . " = :" . $field;
+            } else {
+                $this->query.= $field . " = :" . $field . ",";
             }
-
-            $this->query.= "WHERE id = :id";
-
-            $this->query = \Classes\Model\Connection::getInstance()->prepare($this->query);
-
-            foreach ($this->fields as $key => $rule) {
-                $this->query->bindValue($value, call_user_func($vo, "get" . ucfirst($key)), call_user_func("\PDO", "::" . $rule));
-            }
-        } catch (\PDOException $e) {
-            throw $e;
         }
+
+        $this->query.= " WHERE id = :id";
+        
+        $this->query = \Classes\Model\Connection::getInstance()->prepare($this->query);
+
+        foreach ($this->fields as $field) {
+            $method = "get" . ucfirst($field);
+            $this->query->bindValue($field, $vo->{$method}());
+        }
+        
+        $this->query->bindValue("id", $vo->getId());
+        
+        return $this;
     }
 
     public function select($fields = NULL) {
-        $fields !== NULL ? "*" : $fields;
-
+        $fields = $fields == NULL ? "*" : $fields;
         $this->query = "SELECT " . $fields . " FROM " . $this->table;
+        return $this;
     }
 
     public function where($field, $conditional, $value) {
-        if (strpos($this->query, "WHERE")) {
+        if (strpos($this->query, "WHERE") !== FALSE) {
             $this->query.= "AND WHERE " . $field . " " . $conditional . " " . $value;
-        }else{
+        } else {
             $this->query.= " WHERE " . $field . " " . $conditional . " " . $value;
         }
+        return $this;
     }
 
     public function execute() {
-        if (strpos($this->query, "SELECT")) {
+        if (!is_object($this->query)) {
             try {
-                return \Classes\Model\Connection::getInstance()->query($this->query);
+                return \Classes\Model\Connection::getInstance()->query($this->query)->fetchAll();
             } catch (\PDOException $e) {
                 throw $e;
             }
@@ -97,4 +96,5 @@ class Database {
             throw $e;
         }
     }
+
 }

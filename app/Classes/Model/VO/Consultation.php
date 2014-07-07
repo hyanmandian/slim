@@ -2,7 +2,7 @@
 
 namespace Classes\Model\VO;
 
-class Consultation implements \Classes\Model\Interfaces\VO{
+class Consultation implements \Classes\Model\Interfaces\VO {
 
     private $id;
     private $date;
