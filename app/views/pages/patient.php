@@ -29,5 +29,5 @@
         <label for="address">Endereço</label>
         <input required="required" name="address" type="text" class="form-control" id="address" placeholder="Digite o endereço" value="<?php echo isset($patient) ? $patient["address"]: "";?>">
     </div>
-    <button type="submit" class="btn btn-info btn-block">Submit</button>
+    <button type="submit" class="btn btn-info btn-block">Salvar</button>
 </form>
