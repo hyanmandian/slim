@@ -3,6 +3,8 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
+date_default_timezone_set('Brazil/East');
+
 require 'vendor/autoload.php';
 
 $app = new \Slim\Slim();
@@ -24,11 +26,31 @@ $app->get('/', function () use($app) {
 
     $consultation = Classes\Model\Factory\DAO::factory("consultation");
     $consultations = $consultation->select()->execute();
-    
+
     $app->render("pages/index.php", array(
         "patients" => $patients,
         "medics" => $medics,
         "consultations" => $consultations,
+    ));
+});
+
+$app->get('/search', function () use($app) {
+    $patient = Classes\Model\Factory\DAO::factory("patient");
+    $patients = $patient->select()->execute();
+
+    $medic = Classes\Model\Factory\DAO::factory("medic");
+    $medics = $medic->select()->execute();
+
+    $consultation = Classes\Model\Factory\DAO::factory("consultation");
+    $consultations = $consultation->select()->execute();
+
+    $search = $consultation->select()->where("date", ">=", "'".$app->request()->get("date") . "'")->where("consultation.idmedic", "=", $app->request()->get("medic"))->execute();
+
+    $app->render("pages/index.php", array(
+        "patients" => $patients,
+        "medics" => $medics,
+        "consultations" => $consultations,
+        "search" => $search
     ));
 });
 

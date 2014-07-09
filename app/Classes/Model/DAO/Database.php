@@ -74,7 +74,7 @@ class Database {
 
     public function where($field, $conditional, $value) {
         if (strpos($this->query, "WHERE") !== FALSE) {
-            $this->query.= "AND WHERE " . $field . " " . $conditional . " " . $value;
+            $this->query.= " AND " . $field . " " . $conditional . " " . $value;
         } else {
             $this->query.= " WHERE " . $field . " " . $conditional . " " . $value;
         }

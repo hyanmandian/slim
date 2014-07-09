@@ -3,13 +3,13 @@
 </div>
 
 <ul class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#patients" role="tab" data-toggle="tab">Pacientes</a></li>
+    <li class="<?php echo !isset($search) ? "active" : "" ?>"><a href="#patients" role="tab" data-toggle="tab">Pacientes</a></li>
     <li><a href="#medics" role="tab" data-toggle="tab">Médicos</a></li>
-    <li><a href="#consultations" role="tab" data-toggle="tab">Consultas</a></li>
+    <li class="<?php echo isset($search) ? "active" : "" ?>"><a href="#consultations" role="tab" data-toggle="tab">Consultas</a></li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane active" id="patients">
+    <div class="tab-pane <?php echo !isset($search) ? "active" : "" ?>" id="patients">
         <?php if (count($patients) > 0): ?>
             <table class="table">
                 <thead>
@@ -31,7 +31,7 @@
                             <td><?php echo $patient["name"] ?></td>
                             <td><?php echo $patient["cpf"] ?></td>
                             <td><?php echo $patient["sex"] ?></td>
-                            <td><?php echo $patient["dateofbirth"] ?></td>
+                            <td><?php echo date('d/m/Y', strtotime($patient["dateofbirth"])) ?></td>
                             <td><?php echo $patient["address"] ?></td>
                             <td><a href="/slim/patient/edit/<?php echo $patient["id"]; ?>"><i class="glyphicon glyphicon-edit"></i></a></td>
                             <td><a href="/slim/patient/remove/<?php echo $patient["id"]; ?>"><i class="glyphicon glyphicon-remove-circle"></i></a></td>
@@ -73,7 +73,26 @@
             <p class="text-center alert alert-info">Não existem médicos cadastrados.</p>
         <?php endif; ?>
     </div>
-    <div class="tab-pane" id="consultations">
+    <div class="tab-pane <?php echo isset($search) ? "active" : "" ?>" id="consultations">
+        <form action="/slim/search" method="get" role="form">
+           <div class="form-group">
+                <label for="medic">Medico</label>
+                <select required="required" name="medic" id="medic" class="form-control">
+                    <option value="">Selecione</option>
+                    <?php foreach($medics as $medic):?>
+                        <option <?php echo isset($_GET["medic"]) && $_GET["medic"] == $medic["id"] ? "selected='selected'" : ""; ?>value="<?php echo $medic["id"]?>"><?php echo $medic["name"];?></option>
+                    <?php endforeach;?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Data da consulta</label>
+                <input required="required" name="date" id="date" type="date" class="form-control" value="<?php echo isset($_GET["date"]) ? $_GET["date"]: "";?>">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-info btn-block">Salvar</button>
+            </div>
+        </form>
+        <?php $consultations = isset($search) ? $search : $consultations?>
         <?php if (count($consultations) > 0): ?>
             <table class="table">
                 <thead>
@@ -92,7 +111,7 @@
                     <?php foreach ($consultations as $consultation): ?>
                         <tr>
                             <td><?php echo $consultation["id"] ?></td>
-                            <td><?php echo $consultation["date"] ?></td>
+                            <td><?php echo date('d/m/Y', strtotime($consultation["date"])) ?></td>
                             <td><?php echo $consultation["hour"] ?></td>
                             <td><?php echo $consultation["patient"] ?></td>
                             <td><?php echo $consultation["medic"] ?></td>

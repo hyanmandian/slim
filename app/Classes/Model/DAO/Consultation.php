@@ -19,8 +19,8 @@ class Consultation extends \Classes\Model\DAO\Database {
         if ($especial) {
             $this->query = "SELECT consultation.id as id, date, hour, patient.name as patient, medic.name as medic, observations
                             FROM " . $this->table . " 
-                            JOIN patient ON patient.id = consultation.idpatient
-                            JOIN medic ON medic.id = consultation.idmedic";
+                            JOIN patient ON patient.id = consultation.idpatient 
+                            JOIN medic ON medic.id = consultation.idmedic ";
         } else {
             $this->query = "SELECT " . $fields . " FROM " . $this->table;
         }
